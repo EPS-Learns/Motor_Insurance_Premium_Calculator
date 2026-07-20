@@ -476,7 +476,7 @@ with tab_step2:
             "Primary Circulation Area",
             cat_unique_values["circulation_area"],
             index=cat_unique_values["circulation_area"].index(def_area),
-            format_func=lambda x: "Urban Traffic (U)" if x == "U" else "Rural Highway (R)"
+            format_func=lambda x: "Urban (U)" if x == "U" else "Rural (R)"
         )
     with g2:
         total_exposure = st.number_input("Total Policy Exposure Term", min_value=0.01, max_value=1.0, value=def_exp, step=0.1, help="1.0 = Full 1 Year Cover")
