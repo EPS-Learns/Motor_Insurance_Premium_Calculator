@@ -97,14 +97,11 @@ st.markdown("""
     .logo-go { color: #FFC700; }
     .logo-digit { color: #FFFFFF; }
     .logo-spain { 
-        color: #A1A1AA; 
-        margin-left: 8px; 
-        font-size: 1.15rem; 
+        color: #FFC700; 
+        font-size: 1.4rem; 
         font-weight: 500; 
-        letter-spacing: 2px; 
-        text-transform: uppercase; 
-        vertical-align: middle; 
-        opacity: 0.85; 
+        margin-left: 8px; 
+        opacity: 0.9; 
     }
 
     /* Hero Banner */
