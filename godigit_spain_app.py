@@ -15,21 +15,15 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom Digit Insurance Premium Light Yellow Theme CSS
+# Custom Digit Insurance Dark Background Theme CSS
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     
-    /* Overall Page Light Yellow Background */
     .stApp {
         background: linear-gradient(180deg, #FFFDF0 0%, #FFFBE6 40%, #FEF9C3 100%) !important;
         font-family: 'Plus Jakarta Sans', sans-serif;
-        color: #18181B !important;
-    }
-    
-    /* Ensure High Contrast Dark Text for Light Mode */
-    label, p, span, h1, h2, h3, h4, h5, h6, .stMarkdown {
-        color: #18181B !important;
+        color: #18181B;
     }
     
     /* Top Global Navigation Bar - Centered Go Digit Spain Title */
@@ -85,16 +79,16 @@ st.markdown("""
         font-size: 2.2rem;
         font-weight: 800;
         margin: 0;
-        color: #FFFFFF !important;
+        color: #FFFFFF;
     }
     .digit-hero-subtitle {
-        color: #A1A1AA !important;
+        color: #A1A1AA;
         font-size: 1.05rem;
         margin-top: 0.4rem;
         font-weight: 500;
     }
 
-    /* Light Digit Summary Card */
+    /* Digit Yellow Summary Card */
     .digit-price-card {
         background: linear-gradient(135deg, #FFFDF0 0%, #FFF9C4 100%);
         border: 2.5px solid #FFC700;
@@ -108,24 +102,24 @@ st.markdown("""
         font-size: 0.95rem;
         text-transform: uppercase;
         letter-spacing: 1px;
-        color: #71717A !important;
+        color: #71717A;
         font-weight: 700;
     }
     .digit-price-amount {
         font-size: 3.4rem;
         font-weight: 800;
-        color: #18181B !important;
+        color: #18181B;
         margin: 0.3rem 0;
     }
     .digit-price-sub {
         font-size: 0.9rem;
-        color: #15803D !important;
+        color: #15803D;
         font-weight: 700;
     }
 
     /* Feature & Stat Cards */
     .digit-card {
-        background: #FFFFFF !important;
+        background: #FFFFFF;
         border-radius: 16px;
         padding: 1.5rem;
         border: 1.5px solid #FDE047;
@@ -137,40 +131,14 @@ st.markdown("""
     /* Badge Pills */
     .badge-pill-yellow {
         background: #FEF08A;
-        color: #854D0E !important;
+        color: #854D0E;
         font-size: 0.75rem;
         font-weight: 700;
         padding: 3px 10px;
         border-radius: 10px;
     }
 
-    /* Form Inputs & Dropdown Styling for Light Mode */
-    div[data-baseweb="select"] > div, div[data-baseweb="input"] > div, input {
-        background-color: #FFFFFF !important;
-        color: #18181B !important;
-        border-color: #E4E4E7 !important;
-        border-radius: 10px !important;
-    }
-
-    /* Tab Header Visibility */
-    button[data-baseweb="tab"] {
-        background-color: transparent !important;
-        color: #71717A !important;
-        font-weight: 700 !important;
-        font-size: 0.95rem !important;
-    }
-    button[data-baseweb="tab"][aria-selected="true"] {
-        color: #18181B !important;
-        border-bottom: 3px solid #FFC700 !important;
-    }
-
-    /* DataFrame High Contrast */
-    .stDataFrame, div[data-testid="stTable"] {
-        background-color: #FFFFFF !important;
-        border-radius: 12px !important;
-    }
-
-    /* Custom Buttons */
+    /* Custom Digit Primary & Secondary Buttons */
     div.stButton > button {
         border-radius: 12px;
         font-weight: 700;
