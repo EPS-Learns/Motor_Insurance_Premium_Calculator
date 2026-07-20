@@ -15,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom Digit Insurance Dark Background Theme CSS
+# Custom Digit Insurance Theme CSS
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -24,6 +24,42 @@ st.markdown("""
         background: linear-gradient(180deg, #FFFDF0 0%, #FFFBE6 40%, #FEF9C3 100%) !important;
         font-family: 'Plus Jakarta Sans', sans-serif;
         color: #18181B;
+    }
+    
+    /* Option Names & Input Labels - Bold & High Contrast */
+    label, div[data-testid="stWidgetLabel"] p, .stSelectbox label p, .stNumberInput label p, .stSlider label p {
+        font-size: 1rem !important;
+        font-weight: 800 !important;
+        color: #18181B !important;
+        margin-bottom: 4px !important;
+    }
+
+    /* Make Input Boxes Pure White with Bold Text */
+    div[data-baseweb="select"] > div, 
+    div[data-baseweb="input"] > div, 
+    input {
+        background-color: #FFFFFF !important;
+        color: #18181B !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
+        border: 2px solid #D4D4D8 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    /* Dropdown Popover & Option List Styling */
+    div[data-baseweb="popover"], div[data-baseweb="menu"], ul[role="listbox"] {
+        background-color: #FFFFFF !important;
+        border-radius: 12px !important;
+    }
+    li[role="option"], div[data-baseweb="menu"] div {
+        color: #18181B !important;
+        font-weight: 700 !important;
+        font-size: 0.95rem !important;
+    }
+    li[role="option"]:hover {
+        background-color: #FEF08A !important;
+        color: #18181B !important;
     }
     
     /* Top Global Navigation Bar - Centered Go Digit Spain Title */
@@ -487,8 +523,8 @@ with tab_step3:
                 btn_label = "✔ Included in Quote"
                 btn_type = "primary"
             else:
-                border_style = "border: 1.5px solid #27272A; background: #18181B; opacity: 0.85;"
-                status_badge = '<span style="background:#27272A; color:#A1A1AA; font-weight:600; font-size:0.8rem; padding:4px 12px; border-radius:12px;">+ NOT SELECTED</span>'
+                border_style = "border: 1.5px solid #E4E4E7; background: #FFFFFF; box-shadow: 0 4px 12px rgba(0,0,0,0.04);"
+                status_badge = '<span style="background:#F4F4F5; color:#71717A; font-weight:700; font-size:0.8rem; padding:4px 12px; border-radius:12px;">+ NOT SELECTED</span>'
                 btn_label = "+ Add to Quote"
                 btn_type = "secondary"
 
@@ -498,13 +534,13 @@ with tab_step3:
                     <span class="badge-pill-yellow">{c_info['badge']}</span>
                     {status_badge}
                 </div>
-                <div style="font-weight:800; font-size:1.15rem; color:{'#18181B' if is_active else '#FFFFFF'}; margin-top:10px;">
+                <div style="font-weight:800; font-size:1.15rem; color:#18181B; margin-top:10px;">
                     {c_info['icon']} {c_info['label']}
                 </div>
-                <div style="font-size:0.88rem; color:{'#3F3F46' if is_active else '#A1A1AA'}; font-weight:600; margin-top:2px;">
+                <div style="font-size:0.88rem; color:#3F3F46; font-weight:600; margin-top:2px;">
                     {c_info['tagline']}
                 </div>
-                <div style="font-size:0.82rem; color:{'#71717A' if is_active else '#71717A'}; margin-top:4px;">
+                <div style="font-size:0.82rem; color:#71717A; margin-top:4px;">
                     {c_info['description']}
                 </div>
             </div>
