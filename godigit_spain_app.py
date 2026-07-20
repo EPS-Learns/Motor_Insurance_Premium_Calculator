@@ -96,7 +96,16 @@ st.markdown("""
     }
     .logo-go { color: #FFC700; }
     .logo-digit { color: #FFFFFF; }
-    .logo-spain { color: #FFC700; margin-left: 10px; font-size: 2.6rem; }
+    .logo-spain { 
+        color: #A1A1AA; 
+        margin-left: 8px; 
+        font-size: 1.15rem; 
+        font-weight: 500; 
+        letter-spacing: 2px; 
+        text-transform: uppercase; 
+        vertical-align: middle; 
+        opacity: 0.85; 
+    }
 
     /* Hero Banner */
     .digit-hero {
