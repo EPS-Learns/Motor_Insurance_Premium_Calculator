@@ -15,21 +15,21 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom Digit Insurance Premium Dark Background Theme CSS
+# Custom Digit Insurance Premium Light Yellow Theme CSS
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     
-    /* Overall Page Dark Background */
+    /* Overall Page Light Yellow Background */
     .stApp {
-        background: linear-gradient(180deg, #0F0F11 0%, #18181B 50%, #0F0F11 100%) !important;
+        background: linear-gradient(180deg, #FFFDF0 0%, #FFFBE6 40%, #FEF9C3 100%) !important;
         font-family: 'Plus Jakarta Sans', sans-serif;
-        color: #F4F4F5 !important;
+        color: #18181B !important;
     }
     
-    /* Ensure All Text & Labels Have High Visibility */
+    /* Ensure High Contrast Dark Text for Light Mode */
     label, p, span, h1, h2, h3, h4, h5, h6, .stMarkdown {
-        color: #F4F4F5 !important;
+        color: #18181B !important;
     }
     
     /* Top Global Navigation Bar - Centered Go Digit Spain Title */
@@ -43,7 +43,7 @@ st.markdown("""
         align-items: center;
         border-radius: 20px;
         margin-bottom: 2rem;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
     }
     .digit-logo-text {
         font-family: 'Fredoka', sans-serif;
@@ -68,7 +68,7 @@ st.markdown("""
         position: relative;
         overflow: hidden;
         border-bottom: 5px solid #FFC700;
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
     }
     .digit-hero::after {
         content: "";
@@ -94,82 +94,79 @@ st.markdown("""
         font-weight: 500;
     }
 
-    /* Digit Price Summary Card */
+    /* Light Digit Summary Card */
     .digit-price-card {
-        background: linear-gradient(135deg, #1F1F23 0%, #18181B 100%);
-        border: 2px solid #FFC700;
+        background: linear-gradient(135deg, #FFFDF0 0%, #FFF9C4 100%);
+        border: 2.5px solid #FFC700;
         border-radius: 20px;
         padding: 2rem;
         text-align: center;
-        box-shadow: 0 12px 28px rgba(255, 199, 0, 0.15);
+        box-shadow: 0 12px 28px rgba(255, 199, 0, 0.25);
         margin-bottom: 1.5rem;
     }
     .digit-price-label {
         font-size: 0.95rem;
         text-transform: uppercase;
         letter-spacing: 1px;
-        color: #A1A1AA !important;
+        color: #71717A !important;
         font-weight: 700;
     }
     .digit-price-amount {
         font-size: 3.4rem;
         font-weight: 800;
-        color: #FFC700 !important;
+        color: #18181B !important;
         margin: 0.3rem 0;
     }
     .digit-price-sub {
         font-size: 0.9rem;
-        color: #4ADE80 !important;
+        color: #15803D !important;
         font-weight: 700;
     }
 
     /* Feature & Stat Cards */
     .digit-card {
-        background: #18181B !important;
+        background: #FFFFFF !important;
         border-radius: 16px;
         padding: 1.5rem;
-        border: 1px solid #27272A;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        border: 1.5px solid #FDE047;
+        box-shadow: 0 4px 16px rgba(234, 179, 8, 0.1);
         margin-bottom: 1.2rem;
         transition: all 0.2s ease;
-    }
-    .digit-card:hover {
-        border-color: #FFC700 !important;
     }
 
     /* Badge Pills */
     .badge-pill-yellow {
-        background: #FFC700;
-        color: #18181B !important;
+        background: #FEF08A;
+        color: #854D0E !important;
         font-size: 0.75rem;
-        font-weight: 800;
+        font-weight: 700;
         padding: 3px 10px;
         border-radius: 10px;
     }
 
-    /* Form Inputs & Dropdown Visibility Fixes */
+    /* Form Inputs & Dropdown Styling for Light Mode */
     div[data-baseweb="select"] > div, div[data-baseweb="input"] > div, input {
-        background-color: #27272A !important;
-        color: #FFFFFF !important;
-        border-color: #3F3F46 !important;
+        background-color: #FFFFFF !important;
+        color: #18181B !important;
+        border-color: #E4E4E7 !important;
         border-radius: 10px !important;
     }
 
     /* Tab Header Visibility */
     button[data-baseweb="tab"] {
         background-color: transparent !important;
-        color: #A1A1AA !important;
+        color: #71717A !important;
         font-weight: 700 !important;
         font-size: 0.95rem !important;
     }
     button[data-baseweb="tab"][aria-selected="true"] {
-        color: #FFC700 !important;
+        color: #18181B !important;
         border-bottom: 3px solid #FFC700 !important;
     }
 
     /* DataFrame High Contrast */
     .stDataFrame, div[data-testid="stTable"] {
-        background-color: #18181B !important;
+        background-color: #FFFFFF !important;
         border-radius: 12px !important;
     }
 
@@ -647,24 +644,24 @@ with col_stats:
     with s1:
         st.markdown(f"""
         <div class="digit-card">
-            <div style="font-size:0.8rem; color:#A1A1AA; font-weight:700; text-transform:uppercase;">Net Actuarial Risk Cost</div>
-            <div style="font-size:1.6rem; font-weight:800; color:#FFFFFF;">€{quote['total_pure_premium']:,.2f}</div>
-            <div style="font-size:0.8rem; color:#4ADE80; font-weight:600; margin-top:4px;">Expected Claim Loss Cost</div>
+            <div style="font-size:0.8rem; color:#71717A; font-weight:700; text-transform:uppercase;">Net Actuarial Risk Cost</div>
+            <div style="font-size:1.6rem; font-weight:800; color:#18181B;">€{quote['total_pure_premium']:,.2f}</div>
+            <div style="font-size:0.8rem; color:#166534; font-weight:600; margin-top:4px;">Expected Claim Loss Cost</div>
         </div>
         """, unsafe_allow_html=True)
     with s2:
         exp_claims = quote['total_expected_claims']
         st.markdown(f"""
         <div class="digit-card">
-            <div style="font-size:0.8rem; color:#A1A1AA; font-weight:700; text-transform:uppercase;">Expected Annual Claims</div>
-            <div style="font-size:1.6rem; font-weight:800; color:#38BDF8;">{exp_claims:.4f}</div>
-            <div style="font-size:0.8rem; color:#38BDF8; font-weight:600; margin-top:4px;">claims per policy year</div>
+            <div style="font-size:0.8rem; color:#71717A; font-weight:700; text-transform:uppercase;">Expected Annual Claims</div>
+            <div style="font-size:1.6rem; font-weight:800; color:#0284C7;">{exp_claims:.4f}</div>
+            <div style="font-size:0.8rem; color:#0284C7; font-weight:600; margin-top:4px;">claims per policy year</div>
         </div>
         """, unsafe_allow_html=True)
     
     st.markdown(f"""
-    <div style="background:#18181B; border-radius:12px; padding:12px 16px; border:1px solid #27272A; display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-size:0.88rem; font-weight:600; color:#A1A1AA;">Digit Commercial Loading: {expense_pct*100:.0f}% Expenses + {profit_pct*100:.0f}% Profit Margin</span>
+    <div style="background:#FFFFFF; border-radius:12px; padding:12px 16px; border:1.5px solid #FDE047; display:flex; justify-content:space-between; align-items:center; box-shadow:0 4px 14px rgba(234, 179, 8, 0.08);">
+        <span style="font-size:0.88rem; font-weight:600; color:#3F3F46;">Digit Commercial Loading: {expense_pct*100:.0f}% Expenses + {profit_pct*100:.0f}% Profit Margin</span>
         <span class="badge-pill-yellow">Verified Actuarial Tariff</span>
     </div>
     """, unsafe_allow_html=True)
