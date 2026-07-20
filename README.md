@@ -37,7 +37,7 @@ Where:
 | Coverage Peril | Frequency Model ($\hat{\lambda}$) | Severity Model ($\hat{S}$) | Exposure Term |
 | :--- | :--- | :--- | :--- |
 | **Third Party Liability** | Poisson GLM | Gamma GLM | `liability_exposure` |
-| **Own Damage (Property)** | Poisson GLM | Gamma GLM | `total_exposure` |
+| **Own Damage (Property)** | Negative Binomial GLM | Gamma GLM | `total_exposure` |
 | **Theft Protection** | Poisson GLM | Gamma GLM | `total_exposure` |
 | **Windscreen & Glass** | Poisson GLM | Gamma GLM | `total_exposure` |
 | **Legal Defense** | Poisson GLM | Gamma GLM | `total_exposure` |
