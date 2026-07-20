@@ -26,39 +26,50 @@ st.markdown("""
         color: #18181B;
     }
     
-    /* Option Names & Input Labels - Bold & High Contrast */
+    /* Option Names & Input Labels - Elegant & Subtle Semi-Bold */
     label, div[data-testid="stWidgetLabel"] p, .stSelectbox label p, .stNumberInput label p, .stSlider label p {
-        font-size: 1rem !important;
-        font-weight: 800 !important;
-        color: #18181B !important;
+        font-size: 0.92rem !important;
+        font-weight: 600 !important;
+        color: #27272A !important;
+        letter-spacing: -0.1px !important;
         margin-bottom: 4px !important;
     }
 
-    /* Make Input Boxes Pure White with Bold Text */
+    /* Soft, Subtle White Input Boxes */
     div[data-baseweb="select"] > div, 
     div[data-baseweb="input"] > div, 
     input {
         background-color: #FFFFFF !important;
         color: #18181B !important;
-        font-weight: 700 !important;
-        font-size: 1rem !important;
-        border: 2px solid #D4D4D8 !important;
-        border-radius: 12px !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
+        border: 1px solid #E4E4E7 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03) !important;
+        transition: all 0.15s ease-in-out !important;
+    }
+
+    /* Hover & Active States */
+    div[data-baseweb="select"] > div:hover, 
+    div[data-baseweb="input"] > div:hover {
+        border-color: #FDE047 !important;
     }
 
     /* Dropdown Popover & Option List Styling */
     div[data-baseweb="popover"], div[data-baseweb="menu"], ul[role="listbox"] {
         background-color: #FFFFFF !important;
-        border-radius: 12px !important;
+        border-radius: 10px !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
+        border: 1px solid #F4F4F5 !important;
     }
     li[role="option"], div[data-baseweb="menu"] div {
-        color: #18181B !important;
-        font-weight: 700 !important;
-        font-size: 0.95rem !important;
+        color: #27272A !important;
+        font-weight: 600 !important;
+        font-size: 0.92rem !important;
+        padding: 8px 12px !important;
     }
     li[role="option"]:hover {
-        background-color: #FEF08A !important;
+        background-color: #FEF9C3 !important;
         color: #18181B !important;
     }
     
