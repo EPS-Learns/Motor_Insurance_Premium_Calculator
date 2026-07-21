@@ -3,6 +3,7 @@ import pickle
 import numpy as np
 import pandas as pd
 import streamlit as st
+import altair as alt
 from fpdf import FPDF
 
 # -------------------------------------------------------------------
@@ -661,24 +662,13 @@ with col_price:
     """, unsafe_allow_html=True)
 
 with col_stats:
-    s1, s2 = st.columns(2)
-    with s1:
-        st.markdown(f"""
-        <div class="digit-card">
-            <div style="font-size:0.8rem; color:#71717A; font-weight:700; text-transform:uppercase;">Net Actuarial Risk Cost</div>
-            <div style="font-size:1.6rem; font-weight:800; color:#18181B;">€{quote['total_pure_premium']:,.2f}</div>
-            <div style="font-size:0.8rem; color:#166534; font-weight:600; margin-top:4px;">Expected Claim Loss Cost</div>
-        </div>
-        """, unsafe_allow_html=True)
-    with s2:
-        exp_claims = quote['total_expected_claims']
-        st.markdown(f"""
-        <div class="digit-card">
-            <div style="font-size:0.8rem; color:#71717A; font-weight:700; text-transform:uppercase;">Expected Annual Claims</div>
-            <div style="font-size:1.6rem; font-weight:800; color:#0284C7;">{exp_claims:.4f}</div>
-            <div style="font-size:0.8rem; color:#0284C7; font-weight:600; margin-top:4px;">claims per policy year</div>
-        </div>
-        """, unsafe_allow_html=True)
+    st.markdown(f"""
+    <div class="digit-card">
+        <div style="font-size:0.8rem; color:#71717A; font-weight:700; text-transform:uppercase;">Net Actuarial Risk Cost</div>
+        <div style="font-size:1.6rem; font-weight:800; color:#18181B;">€{quote['total_pure_premium']:,.2f}</div>
+        <div style="font-size:0.8rem; color:#166534; font-weight:600; margin-top:4px;">Expected Claim Loss Cost</div>
+    </div>
+    """, unsafe_allow_html=True)
     
     st.markdown(f"""
     <div style="background:#FFFFFF; border-radius:12px; padding:12px 16px; border:1.5px solid #FDE047; display:flex; justify-content:space-between; align-items:center; box-shadow:0 4px 14px rgba(234, 179, 8, 0.08);">
@@ -697,7 +687,6 @@ table_rows = []
 for cov, det in quote["coverage_details"].items():
     table_rows.append({
         "Cover Peril": f"{det['icon']} {det['label']}",
-        "Digit Tag": det["badge"],
         "Expected Frequency (λ)": f"{det['lambda_hat']:.5f}",
         "Avg Severity (€)": f"€{det['sev_hat']:,.2f}",
         "Net Risk Premium (€)": f"€{det['pure_premium']:,.2f}",
@@ -708,11 +697,51 @@ st.dataframe(df_table, width="stretch", hide_index=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("#### 📊 Premium Share by Cover")
-chart_data = pd.DataFrame({
+
+# Graph Scale Zoom Controls (+ / -)
+if "graph_zoom_level" not in st.session_state:
+    st.session_state.graph_zoom_level = 1.0
+
+prices = [det['commercial_premium'] for det in quote["coverage_details"].values()]
+max_price = max(prices) if prices else 100.0
+base_max_y = float(np.ceil(max_price * 1.15 / 25.0) * 25.0)
+current_max_y = max(10.0, base_max_y * st.session_state.graph_zoom_level)
+
+st.caption("Adjust Graph Scale Range:")
+ctrl_c1, ctrl_c2, ctrl_c3, ctrl_c4 = st.columns([1.2, 1.2, 1.5, 4.5])
+
+with ctrl_c1:
+    if st.button("➕ Zoom In", key="btn_zoom_in", help="Zoom in (decrease Y-axis scale limit)"):
+        st.session_state.graph_zoom_level = max(0.15, st.session_state.graph_zoom_level * 0.75)
+        st.rerun()
+
+with ctrl_c2:
+    if st.button("➖ Zoom Out", key="btn_zoom_out", help="Zoom out (increase Y-axis scale limit)"):
+        st.session_state.graph_zoom_level = min(10.0, st.session_state.graph_zoom_level * 1.35)
+        st.rerun()
+
+with ctrl_c3:
+    if st.button("↺ Reset", key="btn_zoom_reset", help="Reset Y-axis scale to default fit"):
+        st.session_state.graph_zoom_level = 1.0
+        st.rerun()
+
+with ctrl_c4:
+    st.markdown(f"<div style='padding-top:6px; font-weight:600; font-size:0.9rem; color:#3F3F46;'>Left Axis Scale: <span style='color:#18181B; font-weight:800;'>0 € – {current_max_y:,.0f} €</span></div>", unsafe_allow_html=True)
+
+chart_df = pd.DataFrame({
     "Cover": [det['label'] for det in quote["coverage_details"].values()],
-    "Price (€)": [det['commercial_premium'] for det in quote["coverage_details"].values()]
-}).set_index("Cover")
-st.bar_chart(chart_data, color="#FFC700", width="stretch")
+    "Price": [det['commercial_premium'] for det in quote["coverage_details"].values()]
+})
+
+chart = alt.Chart(chart_df).mark_bar(color="#FFC700", cornerRadiusTopLeft=6, cornerRadiusTopRight=6).encode(
+    x=alt.X("Cover:N", title="Coverage Peril", sort=None, axis=alt.Axis(labelAngle=0)),
+    y=alt.Y("Price:Q", title="Price (€)", scale=alt.Scale(domain=[0, current_max_y], clamp=True)),
+    tooltip=[alt.Tooltip("Cover:N", title="Cover Peril"), alt.Tooltip("Price:Q", format=",.2f", title="Final Price (€)")]
+).properties(
+    height=340
+)
+
+st.altair_chart(chart, use_container_width=True)
 
 # -------------------------------------------------------------------
 # Helper: FPDF Policy Quote PDF Generator
