@@ -5,6 +5,13 @@ import pandas as pd
 import streamlit as st
 from fpdf import FPDF
 
+try:
+    import plotly.express as px
+    HAS_PLOTLY = True
+except ImportError:
+    HAS_PLOTLY = False
+    import altair as alt
+
 # -------------------------------------------------------------------
 # 1. Streamlit Page Configuration & Digit Theme Setup
 # -------------------------------------------------------------------
@@ -708,12 +715,80 @@ st.dataframe(df_table, width="stretch", hide_index=True)
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("#### 📊 Premium Share by Cover")
 
-# Graph Display
-chart_data = pd.DataFrame({
-    "Cover": [det['label'] for det in quote["coverage_details"].values()],
+# Graph Display with In-Chart Modebar Zoom & Download Controls
+chart_df = pd.DataFrame({
+    "Cover Peril": [det['label'] for det in quote["coverage_details"].values()],
     "Price (€)": [det['commercial_premium'] for det in quote["coverage_details"].values()]
-}).set_index("Cover")
-st.bar_chart(chart_data, color="#FFC700", width="stretch")
+})
+
+if HAS_PLOTLY:
+    fig = px.bar(
+        chart_df,
+        x="Cover Peril",
+        y="Price (€)",
+        text_auto=".2f",
+        color_discrete_sequence=["#FFC700"]
+    )
+
+    fig.update_traces(
+        textfont_size=12,
+        textposition="outside",
+        cliponaxis=False,
+        hovertemplate="<b>%{x}</b><br>Price: €%{y:,.2f}<extra></extra>"
+    )
+
+    fig.update_layout(
+        margin=dict(l=20, r=20, t=30, b=20),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        height=360,
+        xaxis=dict(
+            title="Coverage Peril",
+            title_font=dict(size=13, color="#27272A"),
+            tickfont=dict(size=12, color="#18181B"),
+            showgrid=False
+        ),
+        yaxis=dict(
+            title="Price (€)",
+            title_font=dict(size=13, color="#27272A"),
+            tickfont=dict(size=12, color="#18181B"),
+            showgrid=True,
+            gridcolor="#E4E4E7",
+            zeroline=True,
+            zerolinecolor="#D4D4D8"
+        ),
+        dragmode=False
+    )
+
+    st.plotly_chart(
+        fig,
+        use_container_width=True,
+        config={
+            'displayModeBar': True,
+            'displaylogo': False,
+            'modeBarButtonsToRemove': ['lasso2d', 'select2d'],
+            'modeBarButtonsToAdd': ['toImage', 'zoomIn2d', 'zoomOut2d', 'resetScale2d'],
+            'toImageButtonOptions': {
+                'format': 'png',
+                'filename': 'digit_premium_share_chart',
+                'height': 500,
+                'width': 800,
+                'scale': 2
+            },
+            'scrollZoom': False
+        }
+    )
+else:
+    alt_df = chart_df.rename(columns={"Cover Peril": "Cover"})
+    chart = alt.Chart(alt_df).mark_bar(color="#FFC700", cornerRadiusTopLeft=6, cornerRadiusTopRight=6).encode(
+        x=alt.X("Cover:N", title="Coverage Peril", sort=None, axis=alt.Axis(labelAngle=0)),
+        y=alt.Y("Price (€):Q", title="Price (€)", scale=alt.Scale(zero=True)),
+        tooltip=[alt.Tooltip("Cover:N", title="Cover Peril"), alt.Tooltip("Price (€):Q", format=",.2f", title="Final Price (€)")]
+    ).properties(
+        height=340
+    ).interactive(bind_x=False, bind_y=True)
+
+    st.altair_chart(chart, use_container_width=True)
 
 # -------------------------------------------------------------------
 # Helper: FPDF Policy Quote PDF Generator
