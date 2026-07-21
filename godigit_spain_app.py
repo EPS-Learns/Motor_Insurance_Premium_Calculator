@@ -210,27 +210,6 @@ st.markdown("""
         color: #18181B !important;
         transform: translateY(-1px);
     }
-    /* Subtle & Small Chart Zoom Buttons */
-    button[aria-label="➕"], button[aria-label="➖"], button[aria-label="↺"] {
-        border-radius: 6px !important;
-        font-size: 0.75rem !important;
-        font-weight: 700 !important;
-        padding: 1px 6px !important;
-        height: 26px !important;
-        min-height: 26px !important;
-        line-height: 24px !important;
-        background-color: #FAFAFA !important;
-        color: #71717A !important;
-        border: 1px solid #E4E4E7 !important;
-        box-shadow: none !important;
-        transform: none !important;
-    }
-    button[aria-label="➕"]:hover, button[aria-label="➖"]:hover, button[aria-label="↺"]:hover {
-        background-color: #F4F4F5 !important;
-        color: #18181B !important;
-        border-color: #D4D4D8 !important;
-        transform: none !important;
-    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -730,47 +709,19 @@ st.dataframe(df_table, width="stretch", hide_index=True)
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("#### 📊 Premium Share by Cover")
 
-# Graph Scale Zoom Controls (+ / -)
-if "graph_zoom_level" not in st.session_state:
-    st.session_state.graph_zoom_level = 1.0
-
-prices = [det['commercial_premium'] for det in quote["coverage_details"].values()]
-max_price = max(prices) if prices else 100.0
-base_max_y = float(np.ceil(max_price * 1.15 / 25.0) * 25.0)
-current_max_y = max(10.0, base_max_y * st.session_state.graph_zoom_level)
-
-ctrl_c1, ctrl_c2, ctrl_c3, ctrl_c4, _ = st.columns([0.5, 0.5, 0.7, 2.5, 4.5])
-
-with ctrl_c1:
-    if st.button("➕", key="btn_zoom_in", help="Zoom in (decrease scale limit)"):
-        st.session_state.graph_zoom_level = max(0.15, st.session_state.graph_zoom_level * 0.75)
-        st.rerun()
-
-with ctrl_c2:
-    if st.button("➖", key="btn_zoom_out", help="Zoom out (increase scale limit)"):
-        st.session_state.graph_zoom_level = min(10.0, st.session_state.graph_zoom_level * 1.35)
-        st.rerun()
-
-with ctrl_c3:
-    if st.button("↺", key="btn_zoom_reset", help="Reset scale to fit"):
-        st.session_state.graph_zoom_level = 1.0
-        st.rerun()
-
-with ctrl_c4:
-    st.markdown(f"<span style='font-size:0.8rem; color:#71717A; font-weight:500; line-height:26px;'>Axis Scale: <b>0 – {current_max_y:,.0f} €</b></span>", unsafe_allow_html=True)
-
+# Graph Display with Default Scale
 chart_df = pd.DataFrame({
     "Cover": [det['label'] for det in quote["coverage_details"].values()],
-    "Price": [det['commercial_premium'] for det in quote["coverage_details"].values()]
+    "Price (€)": [det['commercial_premium'] for det in quote["coverage_details"].values()]
 })
 
 chart = alt.Chart(chart_df).mark_bar(color="#FFC700", cornerRadiusTopLeft=6, cornerRadiusTopRight=6).encode(
     x=alt.X("Cover:N", title="Coverage Peril", sort=None, axis=alt.Axis(labelAngle=0)),
-    y=alt.Y("Price:Q", title="Price (€)", scale=alt.Scale(domain=[0, current_max_y], clamp=True)),
-    tooltip=[alt.Tooltip("Cover:N", title="Cover Peril"), alt.Tooltip("Price:Q", format=",.2f", title="Final Price (€)")]
+    y=alt.Y("Price (€):Q", title="Price (€)", scale=alt.Scale(zero=True)),
+    tooltip=[alt.Tooltip("Cover:N", title="Cover Peril"), alt.Tooltip("Price (€):Q", format=",.2f", title="Final Price (€)")]
 ).properties(
     height=340
-)
+).interactive(bind_x=False, bind_y=True)
 
 st.altair_chart(chart, use_container_width=True)
 
