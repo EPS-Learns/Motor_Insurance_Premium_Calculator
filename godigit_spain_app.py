@@ -451,7 +451,7 @@ tab_step1, tab_step2, tab_step3, tab_step4, tab_step5 = st.tabs([
     "1️⃣ Car & Driver Details",
     "2️⃣ Driving Location & Use",
     "3️⃣ Coverage Selection",
-    "4️⃣ Commercial Tariff Settings",
+    "4️⃣ Commercial Loadings",
     "📖 Digit Data Dictionary"
 ])
 
@@ -903,7 +903,7 @@ def generate_digit_pdf(user_data, quote_data, table_rows, expense_pct, profit_pc
     
     # 3. Peril Breakdown Schedule Table
     pdf.set_font("Helvetica", "B", 11)
-    pdf.cell(0, 7, "3. Itemized Coverage Peril Tariff Schedule", ln=True)
+    pdf.cell(0, 7, "3. Premium Breakdown by Coverage:", ln=True)
     
     pdf.set_fill_color(*DARK_COLOR)
     pdf.set_text_color(255, 255, 255)
