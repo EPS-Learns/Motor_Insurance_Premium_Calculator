@@ -210,6 +210,27 @@ st.markdown("""
         color: #18181B !important;
         transform: translateY(-1px);
     }
+    /* Subtle & Small Chart Zoom Buttons */
+    button[aria-label="➕"], button[aria-label="➖"], button[aria-label="↺"] {
+        border-radius: 6px !important;
+        font-size: 0.75rem !important;
+        font-weight: 700 !important;
+        padding: 1px 6px !important;
+        height: 26px !important;
+        min-height: 26px !important;
+        line-height: 24px !important;
+        background-color: #FAFAFA !important;
+        color: #71717A !important;
+        border: 1px solid #E4E4E7 !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+    button[aria-label="➕"]:hover, button[aria-label="➖"]:hover, button[aria-label="↺"]:hover {
+        background-color: #F4F4F5 !important;
+        color: #18181B !important;
+        border-color: #D4D4D8 !important;
+        transform: none !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -662,13 +683,24 @@ with col_price:
     """, unsafe_allow_html=True)
 
 with col_stats:
-    st.markdown(f"""
-    <div class="digit-card">
-        <div style="font-size:0.8rem; color:#71717A; font-weight:700; text-transform:uppercase;">Net Actuarial Risk Cost</div>
-        <div style="font-size:1.6rem; font-weight:800; color:#18181B;">€{quote['total_pure_premium']:,.2f}</div>
-        <div style="font-size:0.8rem; color:#166534; font-weight:600; margin-top:4px;">Expected Claim Loss Cost</div>
-    </div>
-    """, unsafe_allow_html=True)
+    s1, s2 = st.columns(2)
+    with s1:
+        st.markdown(f"""
+        <div class="digit-card">
+            <div style="font-size:0.8rem; color:#71717A; font-weight:700; text-transform:uppercase;">Net Actuarial Risk Cost</div>
+            <div style="font-size:1.6rem; font-weight:800; color:#18181B;">€{quote['total_pure_premium']:,.2f}</div>
+            <div style="font-size:0.8rem; color:#166534; font-weight:600; margin-top:4px;">Expected Claim Loss Cost</div>
+        </div>
+        """, unsafe_allow_html=True)
+    with s2:
+        exp_claims = quote['total_expected_claims']
+        st.markdown(f"""
+        <div class="digit-card">
+            <div style="font-size:0.8rem; color:#71717A; font-weight:700; text-transform:uppercase;">Expected Annual Claims</div>
+            <div style="font-size:1.6rem; font-weight:800; color:#0284C7;">{exp_claims:.4f}</div>
+            <div style="font-size:0.8rem; color:#0284C7; font-weight:600; margin-top:4px;">claims per policy year</div>
+        </div>
+        """, unsafe_allow_html=True)
     
     st.markdown(f"""
     <div style="background:#FFFFFF; border-radius:12px; padding:12px 16px; border:1.5px solid #FDE047; display:flex; justify-content:space-between; align-items:center; box-shadow:0 4px 14px rgba(234, 179, 8, 0.08);">
@@ -707,26 +739,25 @@ max_price = max(prices) if prices else 100.0
 base_max_y = float(np.ceil(max_price * 1.15 / 25.0) * 25.0)
 current_max_y = max(10.0, base_max_y * st.session_state.graph_zoom_level)
 
-st.caption("Adjust Graph Scale Range:")
-ctrl_c1, ctrl_c2, ctrl_c3, ctrl_c4 = st.columns([1.2, 1.2, 1.5, 4.5])
+ctrl_c1, ctrl_c2, ctrl_c3, ctrl_c4, _ = st.columns([0.5, 0.5, 0.7, 2.5, 4.5])
 
 with ctrl_c1:
-    if st.button("➕ Zoom In", key="btn_zoom_in", help="Zoom in (decrease Y-axis scale limit)"):
+    if st.button("➕", key="btn_zoom_in", help="Zoom in (decrease scale limit)"):
         st.session_state.graph_zoom_level = max(0.15, st.session_state.graph_zoom_level * 0.75)
         st.rerun()
 
 with ctrl_c2:
-    if st.button("➖ Zoom Out", key="btn_zoom_out", help="Zoom out (increase Y-axis scale limit)"):
+    if st.button("➖", key="btn_zoom_out", help="Zoom out (increase scale limit)"):
         st.session_state.graph_zoom_level = min(10.0, st.session_state.graph_zoom_level * 1.35)
         st.rerun()
 
 with ctrl_c3:
-    if st.button("↺ Reset", key="btn_zoom_reset", help="Reset Y-axis scale to default fit"):
+    if st.button("↺", key="btn_zoom_reset", help="Reset scale to fit"):
         st.session_state.graph_zoom_level = 1.0
         st.rerun()
 
 with ctrl_c4:
-    st.markdown(f"<div style='padding-top:6px; font-weight:600; font-size:0.9rem; color:#3F3F46;'>Left Axis Scale: <span style='color:#18181B; font-weight:800;'>0 € – {current_max_y:,.0f} €</span></div>", unsafe_allow_html=True)
+    st.markdown(f"<span style='font-size:0.8rem; color:#71717A; font-weight:500; line-height:26px;'>Axis Scale: <b>0 – {current_max_y:,.0f} €</b></span>", unsafe_allow_html=True)
 
 chart_df = pd.DataFrame({
     "Cover": [det['label'] for det in quote["coverage_details"].values()],
