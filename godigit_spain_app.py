@@ -3,7 +3,6 @@ import pickle
 import numpy as np
 import pandas as pd
 import streamlit as st
-import plotly.express as px
 from fpdf import FPDF
 
 # -------------------------------------------------------------------
@@ -709,60 +708,12 @@ st.dataframe(df_table, width="stretch", hide_index=True)
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("#### 📊 Premium Share by Cover")
 
-# Graph Display with Built-in Modebar Zoom Controls
-chart_df = pd.DataFrame({
-    "Cover Peril": [det['label'] for det in quote["coverage_details"].values()],
+# Graph Display
+chart_data = pd.DataFrame({
+    "Cover": [det['label'] for det in quote["coverage_details"].values()],
     "Price (€)": [det['commercial_premium'] for det in quote["coverage_details"].values()]
-})
-
-fig = px.bar(
-    chart_df,
-    x="Cover Peril",
-    y="Price (€)",
-    text_auto=".2f",
-    color_discrete_sequence=["#FFC700"]
-)
-
-fig.update_traces(
-    textfont_size=12,
-    textposition="outside",
-    cliponaxis=False,
-    hovertemplate="<b>%{x}</b><br>Price: €%{y:,.2f}<extra></extra>"
-)
-
-fig.update_layout(
-    margin=dict(l=20, r=20, t=30, b=20),
-    paper_bgcolor="rgba(0,0,0,0)",
-    plot_bgcolor="rgba(0,0,0,0)",
-    height=360,
-    xaxis=dict(
-        title="Coverage Peril",
-        title_font=dict(size=13, color="#27272A"),
-        tickfont=dict(size=12, color="#18181B"),
-        showgrid=False
-    ),
-    yaxis=dict(
-        title="Price (€)",
-        title_font=dict(size=13, color="#27272A"),
-        tickfont=dict(size=12, color="#18181B"),
-        showgrid=True,
-        gridcolor="#E4E4E7",
-        zeroline=True,
-        zerolinecolor="#D4D4D8"
-    ),
-    dragmode=False
-)
-
-st.plotly_chart(
-    fig,
-    use_container_width=True,
-    config={
-        'displayModeBar': True,
-        'displaylogo': False,
-        'modeBarButtonsToAdd': ['zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d'],
-        'scrollZoom': False
-    }
-)
+}).set_index("Cover")
+st.bar_chart(chart_data, color="#FFC700", width="stretch")
 
 # -------------------------------------------------------------------
 # Helper: FPDF Policy Quote PDF Generator
@@ -946,7 +897,7 @@ col_pdf_center = st.columns([1, 2, 1])[1]
 with col_pdf_center:
     pdf_bytes = generate_digit_pdf(user_data, quote, table_rows, expense_pct, profit_pct)
     st.download_button(
-        label="📄 Download Official Quote (PDF)",
+        label="📥 Download Official Quote (PDF)",
         data=pdf_bytes,
         file_name=f"digit_policy_quote_{driver_age}yo.pdf",
         mime="application/pdf",
