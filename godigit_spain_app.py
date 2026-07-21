@@ -741,6 +741,9 @@ if HAS_PLOTLY:
         margin=dict(l=20, r=20, t=30, b=20),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
+        modebar_bgcolor="rgba(0,0,0,0)",
+        modebar_color="#71717A",
+        modebar_activecolor="#FFC700",
         height=360,
         xaxis=dict(
             title="Coverage Peril",
@@ -766,8 +769,9 @@ if HAS_PLOTLY:
         config={
             'displayModeBar': True,
             'displaylogo': False,
-            'modeBarButtonsToRemove': ['lasso2d', 'select2d'],
-            'modeBarButtonsToAdd': ['toImage', 'zoomIn2d', 'zoomOut2d', 'resetScale2d'],
+            'modeBarButtons': [
+                ['toImage', 'zoomIn2d', 'zoomOut2d', 'resetScale2d']
+            ],
             'toImageButtonOptions': {
                 'format': 'png',
                 'filename': 'digit_premium_share_chart',
