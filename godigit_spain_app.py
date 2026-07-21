@@ -903,7 +903,7 @@ def generate_digit_pdf(user_data, quote_data, table_rows, expense_pct, profit_pc
     
     # 3. Peril Breakdown Schedule Table
     pdf.set_font("Helvetica", "B", 11)
-    pdf.cell(0, 7, "3. Premium Breakdown by Coverage:", ln=True)
+    pdf.cell(0, 7, "3. Premium Breakdown by Coverage", ln=True)
     
     pdf.set_fill_color(*DARK_COLOR)
     pdf.set_text_color(255, 255, 255)
